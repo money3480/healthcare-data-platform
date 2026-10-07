@@ -3,7 +3,7 @@ import pandas as pd
 def model(dbt, session):
     dbt.config(
         materialized="table",
-        packages=["pandas", "scikit-learn"]
+        packages=["pandas", "scikit-learn", "pyarrow"]
     )
 
     # Load upstream dbt models as Pandas DataFrames

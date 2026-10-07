@@ -1,6 +1,7 @@
 {{ config(
     materialized='incremental',
     unique_key='appointment_id',
+    incremental_strategy='delete+insert',
     on_schema_change='sync_all_columns'
 ) }}
 

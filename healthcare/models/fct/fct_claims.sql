@@ -1,6 +1,7 @@
 {{ config(
     materialized='incremental',
     unique_key='claim_id',
+    incremental_strategy='delete+insert',
     on_schema_change='sync_all_columns'
 ) }}
 
@@ -19,7 +20,7 @@ SELECT
         WHEN claim_amount < 5000  THEN 'medium'
         ELSE 'high'
     END                                     AS claim_amount_band,
-    updated_at
+    updated_at::TIMESTAMP_NTZ               AS updated_at
 FROM {{ ref('stg_claims') }}
 
 {% if is_incremental() %}

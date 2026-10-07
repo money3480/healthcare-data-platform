@@ -14,7 +14,7 @@ Environment variables required:
 
 import os
 import boto3
-from datetime import datetime
+from datetime import datetime, timezone
 
 DATA_DIR  = os.path.join(os.path.dirname(__file__), "data")
 S3_BUCKET = os.environ["S3_BUCKET"]
@@ -28,7 +28,7 @@ s3 = boto3.client(
 )
 
 # Timestamp suffix so each upload creates a new file (Snowpipe won't re-load)
-ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
 
 FILES = [
     ("providers.csv",    f"providers/providers_{ts}.csv"),
@@ -45,5 +45,5 @@ if __name__ == "__main__":
             print(f"  SKIP  {local_name} — not found (run generate_data.py first)")
             continue
         s3.upload_file(local_path, S3_BUCKET, s3_key)
-        print(f"  OK    {local_name}  →  s3://{S3_BUCKET}/{s3_key}")
+        print(f"  OK    {local_name}  ->  s3://{S3_BUCKET}/{s3_key}")
     print("Upload complete. Snowpipe will ingest within ~2 minutes.")

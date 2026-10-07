@@ -11,7 +11,7 @@ import os
 import uuid
 import random
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from faker import Faker
 
 fake = Faker()
@@ -62,7 +62,7 @@ def generate_providers(n: int = 50) -> pd.DataFrame:
             "state":         fake.state_abbr(),
             "npi_number":    str(random.randint(1000000000, 9999999999)),
             "is_active":     random.choices([True, False], weights=[90, 10])[0],
-            "updated_at":    datetime.utcnow().isoformat(),
+            "updated_at":    datetime.now(timezone.utc).isoformat(),
         })
     return pd.DataFrame(records)
 
@@ -86,7 +86,7 @@ def generate_patients(providers_df: pd.DataFrame, n: int = 1000) -> pd.DataFrame
                                         start_date="-5y",
                                         end_date="today"
                                     ).isoformat(),
-            "updated_at":           datetime.utcnow().isoformat(),
+            "updated_at":           datetime.now(timezone.utc).isoformat(),
         })
     return pd.DataFrame(records)
 
@@ -122,7 +122,7 @@ def generate_claims(patients_df: pd.DataFrame,
                                     if is_emergency
                                     else 0
                                 ),
-            "updated_at":        datetime.utcnow().isoformat(),
+            "updated_at":        datetime.now(timezone.utc).isoformat(),
         })
     return pd.DataFrame(records)
 
@@ -155,7 +155,7 @@ def generate_appointments(patients_df: pd.DataFrame,
             "appointment_notes": (
                 fake.sentence(nb_words=8) if random.random() > 0.6 else None
             ),
-            "updated_at":       datetime.utcnow().isoformat(),
+            "updated_at":       datetime.now(timezone.utc).isoformat(),
         })
     return pd.DataFrame(records)
 
@@ -173,8 +173,8 @@ if __name__ == "__main__":
     claims.to_json(     f"{OUTPUT_DIR}/claims.json",      orient="records", lines=True)
     appointments.to_csv(f"{OUTPUT_DIR}/appointments.csv", index=False)
 
-    print(f"  providers:    {len(providers):>6,} rows  → data/providers.csv")
-    print(f"  patients:     {len(patients):>6,} rows  → data/patients.csv")
-    print(f"  claims:       {len(claims):>6,} rows  → data/claims.json")
-    print(f"  appointments: {len(appointments):>6,} rows  → data/appointments.csv")
+    print(f"  providers:    {len(providers):>6,} rows  -> data/providers.csv")
+    print(f"  patients:     {len(patients):>6,} rows  -> data/patients.csv")
+    print(f"  claims:       {len(claims):>6,} rows  -> data/claims.json")
+    print(f"  appointments: {len(appointments):>6,} rows  -> data/appointments.csv")
     print("Done.")
