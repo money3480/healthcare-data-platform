@@ -1,0 +1,63 @@
+name: PR slim CI (defer to prod artifact)
+
+on:
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+  actions:  read
+
+jobs:
+  slim-ci:
+    name: Build modified models with defer to prod
+    runs-on: ubuntu-latest
+    env:
+      SNOWFLAKE_ACCOUNT:      "${{ secrets.SNOWFLAKE_ACCOUNT }}"
+      DBT_USER:               "${{ secrets.DBT_USER }}"
+      PRIVATE_KEY_PASSPHRASE: "${{ secrets.PRIVATE_KEY_PASSPHRASE }}"
+      PRIVATE_KEY_PATH:       "${{ github.workspace }}/private_key.p8"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Write private key to file
+        env:
+          PRIVATE_KEY_CONTENT: "${{ secrets.PRIVATE_KEY }}"
+        run: echo "$PRIVATE_KEY_CONTENT" | sed 's/\\n/\n/g' > "${{ github.workspace }}/private_key.p8"
+
+      - name: Set DBT_ENV_NAME from branch
+        run: |
+          NAME="${{ github.head_ref }}"
+          SANITIZED=$(echo "$NAME" | tr '/' '_' | tr '-' '_' | tr '[:lower:]' '[:upper:]')
+          echo "DBT_ENV_NAME=$SANITIZED" >> "$GITHUB_ENV"
+          echo "PR will build into schema: DBT_$SANITIZED"
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+
+      - run: uv python install 3.13
+      - run: uv sync
+
+      - name: dbt deps
+        run: cd healthcare && uv run dbt deps --profiles-dir _prod_profiles --target dev
+
+      - name: Download latest prod-target artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: prod-build.yml
+          branch:   main
+          name:     prod-target
+          path:     healthcare/prod-target
+          if_no_artifact_found: fail
+
+      - name: dbt build (slim CI — modified + downstream only)
+        run: |
+          cd healthcare
+          uv run dbt build \
+            --profiles-dir _prod_profiles \
+            --target dev \
+            --select state:modified+ \
+            --defer \
+            --state ./prod-target

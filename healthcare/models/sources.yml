@@ -1,0 +1,46 @@
+sources:
+  - name: healthcare
+    database: HEALTHCARE
+    schema: raw
+    tables:
+      - name: raw_patients
+        identifier: raw_patients
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after:  {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
+        columns:
+          - name: patient_id
+            tests: [not_null, unique]
+          - name: updated_at
+            tests: [not_null]
+
+      - name: raw_providers
+        identifier: raw_providers
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after:  {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
+        columns:
+          - name: provider_id
+            tests: [not_null, unique]
+
+      - name: raw_claims
+        identifier: raw_claims
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after:  {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
+        columns:
+          - name: claim_id
+            tests: [not_null, unique]
+
+      - name: raw_appointments
+        identifier: raw_appointments
+        loaded_at_field: _loaded_at
+        freshness:
+          warn_after:  {count: 24, period: hour}
+          error_after: {count: 48, period: hour}
+        columns:
+          - name: appointment_id
+            tests: [not_null, unique]

@@ -1,0 +1,30 @@
+# Healthcare Platform — environment setup
+# Dot-source before running dbt or data generator scripts:
+#   . .\set-env.ps1
+# Run once per terminal session — env vars are not persisted.
+# First-time only: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+# ── Snowflake ─────────────────────────────────────────────────
+$env:SNOWFLAKE_ACCOUNT      = "YOUR_ACCOUNT_HERE"   # e.g. abc123.us-east-1
+$env:DBT_USER               = "dbt"
+$env:PRIVATE_KEY_PASSPHRASE = "YOUR_PASSPHRASE_HERE"
+$env:DBT_ENV_NAME           = "DEV"
+
+# Write private key to a temp file and point PRIVATE_KEY_PATH at it
+$privateKey = @"
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+PASTE_YOUR_PRIVATE_KEY_HERE
+-----END ENCRYPTED PRIVATE KEY-----
+"@
+
+$keyPath = "$env:TEMP\healthcare_private_key.p8"
+$privateKey | Set-Content -Path $keyPath -NoNewline:$false
+$env:PRIVATE_KEY_PATH = $keyPath
+
+# ── AWS ───────────────────────────────────────────────────────
+$env:S3_BUCKET              = "YOUR_S3_BUCKET_NAME"
+$env:AWS_ACCESS_KEY_ID      = "YOUR_AWS_KEY_ID"
+$env:AWS_SECRET_ACCESS_KEY  = "YOUR_AWS_SECRET_KEY"
+$env:AWS_DEFAULT_REGION     = "us-east-1"
+
+Write-Host "Environment variables set. PRIVATE_KEY_PATH=$env:PRIVATE_KEY_PATH"

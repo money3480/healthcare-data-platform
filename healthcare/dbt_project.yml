@@ -1,0 +1,53 @@
+name: 'healthcare'
+version: '1.0.0'
+
+profile: 'healthcare'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+flags:
+  warn_error_options:
+    silence:
+      - MissingArgumentsPropertyInGenericTestDeprecation
+
+on-run-start:
+  - "CREATE TABLE IF NOT EXISTS {{ target.schema }}.audit_log (
+        model_name    STRING,
+        run_timestamp TIMESTAMP
+    )"
+
+models:
+  healthcare:
+    +materialized: view
+    staging:
+      +materialized: ephemeral
+    dim:
+      +materialized: table
+    fct:
+      +materialized: incremental
+      +tags: ['fact']
+    mart:
+      +materialized: table
+      +tags: ['mart']
+
+snapshots:
+  healthcare:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +updated_at: updated_at
+
+data_tests:
+  +store_failures: true
+  +schema: test_failures
+
+vars:
+  start_date: '2022-01-01'

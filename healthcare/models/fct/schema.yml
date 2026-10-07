@@ -1,0 +1,87 @@
+models:
+  - name: fct_claims
+    description: "Incremental claims fact table — one row per claim"
+    data_tests:
+      - dbt_expectations.expect_table_row_count_to_be_between:
+          min_value: 1
+          max_value: 100000000
+    columns:
+      - name: claim_id
+        data_tests: [unique, not_null]
+      - name: patient_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_patients')
+                field: patient_id
+      - name: provider_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_providers')
+                field: provider_id
+      - name: diagnosis_code
+        data_tests:
+          - not_null
+          - valid_diagnosis_code
+      - name: claim_amount
+        data_tests:
+          - not_null
+          - positive_values
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1000000
+      - name: claim_date
+        data_tests:
+          - not_null
+          - no_future_dates
+      - name: claim_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['approved', 'denied', 'pending', 'appealed']
+      - name: is_emergency
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [true, false]
+      - name: days_in_hospital
+        data_tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 365
+      - name: claim_amount_band
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['low', 'medium', 'high']
+
+  - name: fct_appointments
+    description: "Incremental appointments fact table"
+    columns:
+      - name: appointment_id
+        data_tests: [unique, not_null]
+      - name: patient_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_patients')
+                field: patient_id
+      - name: provider_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_providers')
+                field: provider_id
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['scheduled', 'completed', 'cancelled', 'no_show']

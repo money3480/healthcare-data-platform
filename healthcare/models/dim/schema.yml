@@ -1,0 +1,75 @@
+models:
+  - name: dim_patients
+    description: "Current patient records (SCD Type 2 — use snap_patients for full history)"
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [patient_id]
+    columns:
+      - name: patient_id
+        description: "Unique patient identifier"
+        data_type: string
+        constraints:
+          - type: not_null
+          - type: unique
+      - name: first_name
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: last_name
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: date_of_birth
+        data_type: date
+        constraints:
+          - type: not_null
+        data_tests:
+          - no_future_dates
+      - name: age
+        data_type: number
+        data_tests:
+          - positive_values
+      - name: gender
+        data_type: string
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['M', 'F', 'OTHER']
+      - name: insurance_type
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['MEDICARE', 'MEDICAID', 'PRIVATE', 'UNINSURED']
+      - name: primary_provider_id
+        data_type: string
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_providers')
+                field: provider_id
+      - name: registration_date
+        data_type: date
+      - name: valid_from
+        data_type: timestamp_ntz
+      - name: last_updated_at
+        data_type: timestamp_ntz
+
+  - name: dim_providers
+    description: "Healthcare provider reference data"
+    columns:
+      - name: provider_id
+        data_tests: [unique, not_null]
+      - name: provider_name
+        data_tests: [not_null]
+      - name: is_active
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [true, false]

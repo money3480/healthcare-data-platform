@@ -1,0 +1,26 @@
+# Environment & secrets
+set-env.ps1
+healthcare/profiles.yml
+healthcare/_prod_profiles/profiles.yml
+*.p8
+*.pem
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# dbt
+healthcare/target/
+healthcare/dbt_packages/
+healthcare/logs/
+healthcare/target-prod/
+
+# Data files (generated)
+data_generator/data/
+
+# OS
+.DS_Store
+Thumbs.db
