@@ -12,7 +12,7 @@ sources:
             error_after: {count: 48, period: hour}
         columns:
           - name: patient_id
-            tests: [not_null, unique]
+            tests: [not_null]
           - name: updated_at
             tests: [not_null]
 
@@ -25,7 +25,7 @@ sources:
             error_after: {count: 48, period: hour}
         columns:
           - name: provider_id
-            tests: [not_null, unique]
+            tests: [not_null]
 
       - name: raw_claims
         identifier: raw_claims

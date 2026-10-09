@@ -63,33 +63,40 @@ models:
 
   - name: dim_providers
     description: "Healthcare provider reference data"
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [provider_id]
     columns:
       - name: provider_id
-        data_type: string
+        data_type: varchar
+        constraints:
+          - type: not_null
+          - type: unique
         data_tests: [unique, not_null]
       - name: provider_name
-        data_type: string
+        data_type: varchar
+        constraints:
+          - type: not_null
         data_tests: [not_null]
+      - name: specialty
+        data_type: varchar
+      - name: provider_type
+        data_type: varchar
+      - name: city
+        data_type: varchar
+      - name: state
+        data_type: varchar
+      - name: npi_number
+        data_type: varchar
       - name: is_active
-        data_type: string
+        data_type: boolean
         data_tests:
           - accepted_values:
               arguments:
                 values: [true, false]
-      - name: provider_name
-        data_type: string
-      - name: specialty
-        data_type: string
-      - name: provider_type
-        data_type: string
-      - name: city
-        data_type: string
-      - name: state
-        data_type: string
-      - name: npi_number
-        data_type: string
-      - name: is_active
-        data_type: boolean
       - name: valid_from
         data_type: timestamp_ntz
       - name: last_updated_at
