@@ -10,16 +10,16 @@ models:
     columns:
       - name: patient_id
         description: "Unique patient identifier"
-        data_type: string
+        data_type: varchar
         constraints:
           - type: not_null
           - type: unique
       - name: first_name
-        data_type: string
+        data_type: varchar
         constraints:
           - type: not_null
       - name: last_name
-        data_type: string
+        data_type: varchar
         constraints:
           - type: not_null
       - name: date_of_birth
@@ -29,17 +29,17 @@ models:
         data_tests:
           - no_future_dates
       - name: age
-        data_type: number
+        data_type: number(3,0)
         data_tests:
           - positive_values
       - name: gender
-        data_type: string
+        data_type: varchar
         data_tests:
           - accepted_values:
               arguments:
                 values: ['M', 'F', 'OTHER']
       - name: insurance_type
-        data_type: string
+        data_type: varchar
         constraints:
           - type: not_null
         data_tests:
@@ -47,7 +47,7 @@ models:
               arguments:
                 values: ['MEDICARE', 'MEDICAID', 'PRIVATE', 'UNINSURED']
       - name: primary_provider_id
-        data_type: string
+        data_type: varchar
         data_tests:
           - not_null
           - relationships:

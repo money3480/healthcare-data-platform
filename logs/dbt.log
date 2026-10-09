@@ -13,3 +13,33 @@ Runtime Error
 [0m22:17:11.690204 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AE715C0640>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AE715B8CB0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002AE70552BE0>]}
 [0m22:17:11.690445 [debug] [MainThread]: Flushing usage events
 [0m22:17:11.969403 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m17:17:33.361848 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000198ABAA6510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000198A8B5BB10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000198ACEA39D0>]}
+
+
+============================== 17:17:33.368480 | f2e05cdd-0c4f-4ba4-8b39-575fe3902818 ==============================
+[0m17:17:33.368480 [info ] [MainThread]: Running with dbt=1.11.15
+[0m17:17:33.369134 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'no_print': 'None', 'version_check': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'target_path': 'None', 'printer_width': '80', 'write_json': 'True', 'introspect': 'True', 'log_cache_events': 'False', 'empty': 'None', 'cache_selected_only': 'False', 'log_format': 'default', 'debug': 'False', 'fail_fast': 'False', 'profiles_dir': '_prod_profiles', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'partial_parse': 'True', 'invocation_command': 'dbt deps --profiles-dir _prod_profiles --target dev', 'indirect_selection': 'eager', 'use_colors': 'True', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m17:17:33.369894 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path C:\Users\MARVINSCOTT\Desktop\Git Repositories\healthcare-platform\dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m17:17:33.370862 [debug] [MainThread]: Command `dbt deps` failed at 17:17:33.370779 after 0.17 seconds
+[0m17:17:33.371134 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000198ACD736F0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000198ADEBCEF0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000198ADEA4F30>]}
+[0m17:17:33.371371 [debug] [MainThread]: Flushing usage events
+[0m17:17:33.667269 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m17:23:09.284019 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000023D46D56510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000023D43D4BB10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000023D481AFB10>]}
+
+
+============================== 17:23:09.287406 | 8869bb35-4972-48c5-be05-de8014eb0166 ==============================
+[0m17:23:09.287406 [info ] [MainThread]: Running with dbt=1.11.15
+[0m17:23:09.288046 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'no_print': 'None', 'static_parser': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'write_json': 'True', 'introspect': 'True', 'log_cache_events': 'False', 'empty': 'False', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'partial_parse': 'True', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'profiles_dir': 'C:\\Users\\MARVINSCOTT\\.dbt', 'indirect_selection': 'eager', 'invocation_command': 'dbt snapshot -select snap_patients', 'use_colors': 'True', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m17:23:09.288448 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path C:\Users\MARVINSCOTT\Desktop\Git Repositories\healthcare-platform\dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m17:23:09.289164 [debug] [MainThread]: Command `dbt snapshot` failed at 17:23:09.289084 after 0.13 seconds
+[0m17:23:09.289382 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000023D4822C510>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000023D481F4CB0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000023D48166BE0>]}
+[0m17:23:09.289695 [debug] [MainThread]: Flushing usage events
+[0m17:23:09.677166 [debug] [MainThread]: An error was encountered while trying to flush usage events

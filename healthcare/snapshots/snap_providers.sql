@@ -5,8 +5,7 @@
         target_schema='snapshots',
         unique_key='provider_id',
         strategy='timestamp',
-        updated_at='updated_at',
-        invalidate_hard_deletes=True
+        updated_at='updated_at'
     )
 }}
 

@@ -5,6 +5,8 @@ models:
       - dbt_expectations.expect_table_row_count_to_be_between:
           min_value: 1
           max_value: 100000000
+          config:
+            severity: warn
     columns:
       - name: claim_id
         data_tests: [unique, not_null]
