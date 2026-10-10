@@ -1,0 +1,17 @@
+exposures:
+  - name: executive_dashboard
+    label: Executive Dashboard
+    type: dashboard
+    maturity: low
+    url: https://c9cab47e.us2a.app.preset.io/superset/dashboard/8/?edit=true&native_filters_key=lYr-Klo_KfAMYZj4O3ug0Q
+    description: Executive Dashboard for Healthcare Studies Global
+
+
+    depends_on:
+      - ref('mart_claims_summary')
+      - ref('mart_patient_risk_scores')
+      - ref('mart_provider_performance')
+
+    owner:
+      name: Marvin O Scott Jr.
+      email: moscott@us.ibm.com
